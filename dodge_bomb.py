@@ -3,21 +3,29 @@ import sys
 import pygame as pg
 
 
-WIDTH, HEIGHT = 1600, 900
+WIDTH, HEIGHT = 1200, 600  # 定数なので大文字
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+#辞書を定義
+DELTA = dict{
+    pg.K_UP : (0, -5)
+    pg.K_DOWN : (0, 5)
+    pg.L_LEFT : (-5, 0)
+    pg.K_RIGHT : (5, 0)
+}
 
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
-    bg_img = pg.image.load("fig/pg_bg.jpg")    
+    bg_img = pg.image.load("fig/pg_bg.jpg")    # 背景画像
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
-    kk_rct = kk_img.get_rect()
-    kk_rct.center = 900, 400
+    kk_rct = kk_img.get_rect()  # surfaceを抽出
+    kk_rct.center = 900, 400   # 中心座標
     clock = pg.time.Clock()
     tmr = 0
     while True:
-        for event in pg.event.get():
+        for event in pg.event.get():  # ゲームの×ボタンが押されたら終了
             if event.type == pg.QUIT: 
                 return
         screen.blit(bg_img, [0, 0]) 
@@ -25,7 +33,7 @@ def main():
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         if key_lst[pg.K_UP]:
-            sum_mv[1] -= 5
+            sum_mv[1] -= 5   # 移動量
         if key_lst[pg.K_DOWN]:
             sum_mv[1] += 5
         if key_lst[pg.K_LEFT]:
