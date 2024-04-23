@@ -54,14 +54,14 @@ def main():
                 return
         if kk_rct.colliderect(bd_rct):  # こうかとんと爆弾がぶつかったら
             print("Game Over")
-            gamen = pg.Surface((1200, 600))
+            gamen = pg.Surface((1200, 600))  # ブラックアウト
             gamen_rct =gamen.get_rect()
             pg.draw.rect(gamen, (0, 0, 0), (0, WIDTH, 0, HEIGHT))
             gamen.set_alpha(200)
             screen.blit(gamen, gamen_rct)
             txt = fonto.render("Game Over", True, (255, 255, 255))
             txt_rct = txt.get_rect()
-            txt_rct.center = WIDTH/2, HEIGHT/2
+            txt_rct.center = WIDTH/2, HEIGHT/2  # テキストの位置
             screen.blit(txt, txt_rct)
             img = pg.image.load("fig/8.png")
             img_rct = img.get_rect
