@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -46,21 +47,55 @@ def main():
     vx, vy = +5, +5  # 横方向速度，縦方向速度
     clock = pg.time.Clock()
     tmr = 0
+    fonto = pg.font.Font(None, 80)
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
         if kk_rct.colliderect(bd_rct):  # こうかとんと爆弾がぶつかったら
             print("Game Over")
+            gamen = pg.Surface((1200, 600))
+            gamen_rct =gamen.get_rect()
+            pg.draw.rect(gamen, (0, 0, 0), (0, WIDTH, 0, HEIGHT))
+            gamen.set_alpha(200)
+            screen.blit(gamen, gamen_rct)
+            txt = fonto.render("Game Over", True, (255, 255, 255))
+            txt_rct = txt.get_rect()
+            txt_rct.center = WIDTH/2, HEIGHT/2
+            screen.blit(txt, txt_rct)
+            img = pg.image.load("fig/8.png")
+            img_rct = img.get_rect
+            img_rct.center = random.randint(0,WIDTH), random.randint(0,HEIGHT)
+            pg.display.update()
+            time.sleep(5)
             return
         screen.blit(bg_img, [0, 0]) 
         # こうかとんの移動と表示
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
+
+        def Rotate_kk(rotate:int):  #rotozoomをSurfaceを値とした辞書
+            """
+            sum_mvのValueに対応
+            """
+            rotate = {
+                (-5, 0) : pg.transform.rotozoom(kk_img, 0, 2.0),
+                (-5, +5) : pg.transform.rotozoom(kk_img, 45, 2.0),
+                (0, 5) : pg.transform.rotozoom(kk_img, 90, 2.0),
+                (5, 5) : pg.transform.rotozoom(kk_img, 135, 2.0),
+                (5, 0) : pg.transform.rotozoom(kk_img, 180, 2.0),
+                (5, -5) : pg.transform.rotozoom(kk_img, 225, 2.0),
+                (0, -5) : pg.transform.rotozoom(kk_img, 270, 2.0),
+                (-5, -5) : pg.transform.rotozoom(kk_img, 315, 2.0)
+            }
+            return rotate
         for k, v in DELTA.items():
             if key_lst[k]:
-               sum_mv[0] += v[0]
-               sum_mv[1] += v[1]
+                sum_mv[0] += v[0]
+                sum_mv[1] += v[1]
+            #
+            #screen.blit(ll_img, [300, 200])
+                
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
@@ -75,7 +110,9 @@ def main():
             vy *= -1
         pg.display.update()
         tmr += 1
+        print(sum_mv)
         clock.tick(50)
+
 
 if __name__ == "__main__":
     pg.init()
